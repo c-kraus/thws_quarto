@@ -1,0 +1,158 @@
+---
+title: "Grundlagen des EU-Rechts"
+subtitle: "Struktur, Kompetenzen und Binnenmarkt"
+author: "Prof. Dr. Christian Kraus"
+date: last-modified
+lang: en
+format:
+  tutorial-typst
+resources:
+  - assets/
+---
+
+# Historische Entwicklung & Struktur
+
+> "Die EU ist kein Staat, aber weit mehr als eine internationale Organisation. Sie ist ein juristisches Unikat sui generis."
+
+Die Europäische Union ist das Ergebnis eines jahrzehntelangen Integrationsprozesses, der sich von einem reinen Friedensprojekt für Kohle und Stahl zu einer umfassenden politischen Union gewandelt hat. Die Reise begann **1951** mit der **EGKS** – ein rein wirtschaftliches Vehikel, um Kriege materiell unmöglich zu machen.
+
+Das rechtliche Fundament, auf dem wir uns heute bewegen, ruht auf historischen Meilensteinen:
+Die **Römischen Verträge (1957)** schufen die wirtschaftliche Gemeinschaft. Der **Vertrag von Maastricht (1993)** begründete formell die "Europäische Union" und addierte die politische Dimension. Der **Vertrag von Lissabon (2009)** schließlich straffte die Institutionen und gab der EU ihr heutiges verfassungsrechtliches Gesicht.
+
+Juristisch operieren wir in einem dualistischen System aus zwei Hauptverträgen:
+1.  **EUV (Vertrag über die Europäische Union):** Der konstitutionelle Rahmen ("Das Grundgesetz").
+2.  **AEUV (Vertrag über die Arbeitsweise der EU):** Das operative Regelwerk ("Der Maschinenraum").
+
+::: {.drag-exercise}
+Der Integrationsprozess startete 1951 mit der *EGKS* als Wirtschaftsprojekt. Der Vertrag von *Maastricht* (1993) gründete die EU offiziell, während der Vertrag von *Lissabon* (2009) die heutige institutionelle Reform brachte.
+:::
+
+---
+
+# Kompetenzverteilung
+
+## Das Prinzip der begrenzten Einzelermächtigung
+
+In der EU lautet die Gretchenfrage stets: "Wer darf schreiben?"
+Das zentrale Ordnungsprinzip ist die **begrenzte Einzelermächtigung** (Principle of Conferral). Das bedeutet: Die EU besitzt **keine originäre Staatsgewalt**. Sie darf nur dort gesetzgeberisch tätig werden, wo ihr die Mitgliedstaaten ("Herren der Verträge") explizit die Kompetenz übertragen haben. Ohne Mandat bleibt die Macht in der Hauptstadt.
+
+## Die Kompetenz-Kategorien
+
+Der AEUV unterscheidet drei "Macht-Töpfe":
+
+1.  **Ausschließliche Zuständigkeit:** Hier regiert allein Brüssel. Nationale Alleingänge sind verboten. Beispiele: **Zollunion**, Wettbewerbsrecht für den Binnenmarkt und die Geldpolitik der Eurozone.
+2.  **Geteilte Zuständigkeit:** Sowohl EU als auch Mitgliedstaaten dürfen legiferieren. Aber: Sobald die EU handelt, verlieren die Staaten ihre Befugnis (Sperrwirkung). Dies ist der Regelfall: **Umwelt**, Verkehr, Verbraucherschutz. Die EU setzt hier oft Mindeststandards.
+3.  **Nationale Zuständigkeit:** Hier herrscht Harmonisierungsverbot. In Bereichen wie **Bildung**, Kultur oder Sport darf die EU nur koordinieren oder unterstützen ("Cheerleader-Funktion"), aber niemals befehlen.
+
+## Subsidiarität & Die "Kompetenz-Kompetenz"
+
+Die EU hat keine "Kompetenz-Kompetenz" – sie kann sich ihre Aufgaben nicht selbst erweitern. Zudem wirkt bei geteilten Zuständigkeiten das **Subsidiaritätsprinzip** als Türsteher: Die EU darf nur eingreifen, wenn das Problem national nicht lösbar ist, sondern auf Unionsebene *besser* erreicht werden kann.
+
+<details>
+<summary>Deep Dive: Implied Powers Doktrin</summary>
+Trotz der strengen Einzelermächtigung erlaubt das EU-Recht Flexibilität. Nach der **"Implied Powers"-Doktrin** (und Art. 352 AEUV) kann die EU Maßnahmen ergreifen, die zur Erreichung eines Vertragsziels nötig sind, auch ohne explizite Detail-Befugnis. Dieses "Schlupfloch" wird jedoch vom Bundesverfassungsgericht (siehe *Lissabon-Urteil* 2009) mit Argusaugen überwacht (Ultra-vires-Kontrolle).
+</details>
+
+::: {.flip-card}
+#### Subsidiaritätsprinzip
+Regel für die Ausübung geteilter Kompetenzen: Die EU greift nur ein, wenn nationale Maßnahmen nicht ausreichen und eine europäische Lösung einen klaren Mehrwert bietet.
+:::
+
+---
+
+# Die Rechtsordnung: Vorrang & Durchsetzung
+
+Das "User Interface" des EU-Rechts wird durch das Verhältnis zum nationalen Recht definiert. Zwei Prinzipien sind hier absolut dominant: **Vorrang** und **Unmittelbare Wirkung**.
+
+## Unmittelbare Wirkung (Direct Effect)
+Im Paukenschlag-Urteil **Van Gend & Loos** revolutionierte der EuGH das Völkerrecht. Er stellte fest: EU-Recht ist nicht nur Recht für Staaten, sondern verleiht auch dem einzelnen Bürger **direkte Rechte**.
+Wenn nationales Recht (z.B. eine Zollerhöhung) dem EU-Recht widerspricht, muss das nationale Gericht das heimische Gesetz ignorieren und das EU-Recht anwenden. Der Bürger wird zum Wächter der Verträge.
+
+## Staatshaftung
+Was passiert, wenn ein Staat Brüssel ignoriert?
+Im Fall **Francovich** etablierte der EuGH das Institut der **Staatshaftung**. Wenn ein Mitgliedstaat eine Richtlinie (z.B. Arbeitnehmerschutz bei Insolvenz) nicht fristgerecht oder falsch umsetzt und dem Bürger dadurch ein Schaden entsteht, muss der Staat zahlen. EU-Recht ist kein "Papiertiger".
+
+::: {.quick-check}
+Welches Urteil etablierte, dass sich Bürger vor nationalen Gerichten direkt auf EU-Recht berufen können?
+
+- Francovich
+- **Van Gend & Loos**
+- Dassonville
+
+> Van Gend & Loos begründete die "Unmittelbare Wirkung" und machte das EU-Recht zum "Bürgerrecht".
+:::
+
+---
+
+# Institutioneller Rahmen
+
+EU-Gesetze entstehen im "Institutionellen Dreieck":
+
+1.  **Die Europäische Kommission:** Der "Motor". Sie besitzt das **alleinige Initiativrecht**. Kein Gesetz ohne Vorschlag der Kommission.
+2.  **Das Europäische Parlament:** Die "Stimme der Bürger".
+3.  **Der Rat der EU:** Die "Stimme der Staaten".
+
+Parlament und Rat prüfen, ändern und verabschieden Gesetze gemeinsam im **Ordentlichen Gesetzgebungsverfahren** (Co-Decision). Sie sind Co-Legislatoren auf Augenhöhe. Finden sie nach zwei Lesungen keine Einigung, muss der **Vermittlungsausschuss** (Conciliation Committee) einen Kompromiss erzwingen.
+
+---
+
+# Der Binnenmarkt & Die Fünf Freiheiten
+
+Der ökonomische Kern der EU ist der Binnenmarkt, getrieben von den fünf Grundfreiheiten:
+**Waren, Personen, Dienstleistungen, Kapital und Niederlassung.**
+
+## Warenverkehrsfreiheit
+Das Ziel: Ein reibungsloser Markt ohne Zölle oder Quoten. Der EuGH hat diese Freiheit durch seine Rechtsprechung aggressiv erweitert:
+
+* **Die Dassonville-Formel:** Jede Handelsregelung, die den innergemeinschaftlichen Handel direkt oder indirekt, tatsächlich oder potenziell behindern *könnte*, ist verboten. (Beispiel: Übertriebene Zertifikate für Whisky).
+* **Die Cassis de Dijon-Formel:** Das Prinzip der gegenseitigen Anerkennung. Was in einem Mitgliedstaat rechtmäßig hergestellt wurde (z.B. Cassis-Likör in Frankreich), muss überall verkauft werden dürfen. Ausnahmen gelten nur für "zwingende Erfordernisse des Allgemeinwohls" (z.B. Gesundheitsschutz) – und sie müssen **verhältnismäßig** sein.
+
+## Niederlassungsfreiheit
+Unternehmen und Selbstständige dürfen ihren Sitz überall in der EU wählen.
+* **Fall Factortame:** Ein Machtwort zum Vorrang. Der EuGH entschied, dass nationale Gerichte sogar Gesetze des eigenen Parlaments aussetzen müssen (hier UK-Fischereigesetze gegen spanische Fischer), wenn diese EU-Rechte verletzen.
+* **Fall Gebhard:** Beschränkungen (z.B. für Anwälte) sind nur zulässig, wenn sie nicht diskriminierend sind, zwingenden Gründen dienen sowie geeignet und erforderlich sind.
+
+::: {.drag-exercise}
+Die *Dassonville*-Formel verbietet jede Maßnahme, die den Handel behindern könnte. Das *Cassis*-Urteil etablierte das Prinzip der gegenseitigen *Anerkennung* von Produkten.
+:::
+
+---
+
+# Europäisches Gesellschaftsrecht: Die Societas Europaea (SE)
+
+Die **Societas Europaea (SE)** ist das Flaggschiff des europäischen Gesellschaftsrechts – eine Aktiengesellschaft nach EU-Recht.
+
+* **Specs:** Mindestkapital 120.000 €; Sitz in einem EU-Staat (mit der Option der Sitzverlegung über Grenzen hinweg).
+* **Governance:** Wahlrecht zwischen **Dualistischem System** (Vorstand + Aufsichtsrat) und **Monistischem System** (Verwaltungsrat).
+* **Mitbestimmung:** Der entscheidende Hebel ist der **"Einfriereffekt"**. Wird eine deutsche AG in eine SE umgewandelt, wird der Status der Arbeitnehmermitbestimmung zu diesem Zeitpunkt "eingefroren". Wächst das Unternehmen danach (z.B. von 450 auf 750 Mitarbeiter), greifen strengere nationale Gesetze (wie das Drittelbeteiligungsgesetz) nicht mehr automatisch. Die SE fungiert als Schutzschild gegen die schleichende Ausweitung nationaler Mitbestimmung.
+
+::: {.flip-card}
+#### Der Einfriereffekt
+Bei Gründung einer SE wird das aktuelle Niveau der Mitbestimmung festgeschrieben. Späteres Wachstum löst keine strengeren nationalen Mitbestimmungsgesetze mehr aus.
+:::
+
+---
+
+# Aktuelle Herausforderungen & Synthese
+
+## Der Geopolitische Shift
+Die EU unterzieht ihre **Gemeinsame Sicherheits- und Verteidigungspolitik (GSVP)** derzeit einem Stresstest. Während Art. 42 EUV eine gemeinsame Verteidigung vorskizziert, wirkte der Ukraine-Krieg als Katalysator: Er deckte Lücken in der militärischen Bereitschaft auf und erzwang die Diskussion über strategische Autonomie und gemeinsame Munitionsbeschaffung.
+Der **Brexit** hingegen diente als brutale Lektion über den Wert des Binnenmarktes: Der Austritt führte zur sofortigen Rückkehr von Handelshemmnissen und Bürokratie für UK.
+
+## Die Mehrparteienhaus-Analogie
+Um die EU-Rechtsordnung greifbar zu machen, stellen Sie sich ein **Mehrparteienhaus** vor:
+
+* **Die Eigentümer (Mitgliedstaaten):** Ihnen gehören die einzelnen Wohnungen. In ihren vier Wänden bestimmen sie die Regeln (Nationale Kompetenz).
+* **Die Gemeinschaftsflächen (Ausschließliche Kompetenz):** Für Treppenhaus und Dach (Handel, Zoll) haben sie die Schlüssel an die **Hausverwaltung (EU)** abgegeben.
+* **Die Hausordnung (EU-Recht):** Gilt für alle. Im Konfliktfall sticht die Hausordnung die Regeln der einzelnen Wohnung (**Vorrang/Van Gend & Loos**).
+* **Durchsetzung:** Wenn ein Eigentümer den Flur mit Kisten zustellt, verletzt er die Regeln des freien Durchgangs (**Dassonville**). Wenn die Verwaltung das Dach nicht repariert und es in eine Wohnung regnet, muss sie haften (**Francovich/Staatshaftung**).
+
+::: {.quick-check}
+Nach dem "Cassis de Dijon"-Prinzip muss ein Produkt aus Land A in Land B akzeptiert werden, außer:
+
+- Die Steuersätze sind unterschiedlich.
+- **Zwingende Gründe des Allgemeinwohls (z.B. Gesundheit) rechtfertigen eine Beschränkung.**
+- Das Produkt konkurriert mit lokalen Waren.
+
+> Dieses Prinzip der "Gegenseitigen Anerkennung" verhindert Protektionismus, der sich als Regulierung tarnt.
+:::
