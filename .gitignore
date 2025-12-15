@@ -1,1 +1,7 @@
 /.luarc.json
+
+# macOS Systemdateien (Hässlich in Repos)
+.DS_Store
+
+# VS Code Settings (optional, wenn du sie nicht teilen willst)
+.vscode/
