@@ -8,5 +8,4 @@ contributes:
       template-partials:
         - typst-template.typ
         - typst-show.typ
-resources:
-        - thws-logo_vert_de_orange-rgb.png
+

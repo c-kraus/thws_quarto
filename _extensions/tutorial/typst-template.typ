@@ -1,5 +1,5 @@
 // ===========================================================
-// THWS-Tutorial-Template (Unified)
+// THWS-Tutorial-Template (Unified & Fixed)
 // ===========================================================
 
 #let thws_orange = rgb("#ff6a00")
@@ -16,6 +16,8 @@
   date: none,
   version: none,
   lang: "de",
+  // NEU: Logo Parameter
+  logo: none,
   // Bib & Struktur
   bib_file: none,
   citation_style: none,
@@ -23,41 +25,49 @@
   outline_depth: 2,
   body,
 ) = {
-  // 1. HEADER
-  let logo_path = if lang == "en" {
-    "_extensions/logo/logo_en.svg"
-  } else {
-    "_extensions/logo/logo.svg"
-  }
+  //----------------------------
+  // 1. Metadaten & Helper
+  //----------------------------
+  let author_list = if type(authors) == array { authors } else if type(authors) == dictionary { (authors,) } else { () }
 
-  // 1. HEADER
-  let header_content = block[
-    #v(5mm)
-    #grid(
-      columns: (1fr, auto),
-      align: (left + horizon, right + horizon),
-      image(logo_path, width: 20%), text(fill: thws_orange, size: 10pt)[#course],
-    )
-  ]
+  // Helper für den Footer-String (Tutorial-Spezifisch: "Name, Name")
+  let author_names = author_list.map(a => a.name)
+  let author_string = author_names.join(", ")
+  if author_string == "" { author_string = "THWS" }
 
-  // 2. PAGE SETUP & FOOTER
+  let date-string = if date != none { date } else { datetime.today().display("[day].[month].[year]") }
+
+  set document(title: title, author: author_names)
+
+  //----------------------------
+  // 2. Seite / Header / Footer
+  //----------------------------
   set page(
     paper: "a4",
-    margin: (left: 32mm, right: 20mm, top: 26mm, bottom: 35mm),
-    header: header_content,
+    // Einheitliche Ränder mit Reader/Handout (45mm oben für Header)
+    margin: (left: 32mm, right: 20mm, top: 45mm, bottom: 35mm),
+
+    header: context {
+      // LOGIK: Header auf JEDER Seite (Tutorial Standard)
+
+      // 1. Logo Links (hochgezogen)
+      if logo != none {
+        place(top + left, dx: 0mm, dy: -20mm, image(logo, width: 20%))
+      }
+
+      // 2. Kurs Rechts (hochgezogen)
+      if course != none {
+        place(top + right, dx: 0mm, dy: -20mm, text(fill: thws_orange, size: 10pt, weight: "semibold")[#course])
+      }
+    },
+
     footer: context {
       let page-num = counter(page).get().first()
 
-      // Autoren-Logik (Unified)
-      let auth-list = if type(authors) == array { authors } else { (authors,) }
-      let names = auth-list.map(it => if type(it) == dictionary and "name" in it { it.name } else { it })
-      let author-string = names.filter(n => n != "" and n != none).join(", ")
-      if author-string == "" { author-string = "THWS" }
-
-      let date-string = if date != none { date } else { datetime.today().display("[day].[month].[year]") }
-
+      // TUTORIAL SPEZIAL FOOTER
       pad(bottom: 10mm)[
         #if page-num == 1 {
+          // Seite 1: Detaillierte Infos unten
           align(bottom)[
             #block(width: 100%)[
               #line(length: 100%, stroke: 0.5pt + thws_orange)
@@ -74,13 +84,14 @@
                     text(fill: thws_orange)[|]
                     h(0.5em)
                   }
-                  #author-string
+                  #author_string
                 ],
                 [#date-string],
               )
             ]
           ]
         } else {
+          // Ab Seite 2: Nur Seitenzahl
           align(center + bottom)[
             #text(size: 9pt, fill: thws_orange)[ #page-num]
           ]
@@ -89,7 +100,9 @@
     },
   )
 
-  // 3. TYPOGRAFIE
+  //----------------------------
+  // 3. Typografie
+  //----------------------------
   set text(font: "Helvetica", size: 10pt, lang: lang)
   set par(leading: 0.65em, spacing: 1.2em, justify: true)
 
@@ -123,18 +136,26 @@
     }
   }
 
+  //----------------------------
   // 4. TITELBLOCK
+  //----------------------------
   v(1.5cm)
-  if subtitle != none {
-    align(center)[#block(text(fill: thws_orange, weight: 700, size: 1.75em)[#subtitle])]
-  }
-  if title != "" {
-    v(4pt)
-    align(center)[#text(fill: thws_orange, size: 15pt, weight: "semibold")[#title]]
-  }
+
+  // FIX: Zentrierung sicherstellen mit width 100% und justify false
+  align(center, block(width: 100%)[
+    #set par(justify: false)
+
+    #if subtitle != none {
+      block(text(fill: thws_orange, weight: 700, size: 1.75em)[#subtitle])
+    }
+    #if title != "" {
+      v(4pt)
+      text(fill: thws_orange, size: 15pt, weight: "semibold")[#title]
+    }
+  ])
+
   v(1cm)
 
-  // Optionales Abstract/Intro auch im Tutorial anzeigen?
   if abstract != none {
     block(width: 100%, inset: (x: 2em))[#text(style: "italic")[#abstract]]
     v(1cm)
@@ -146,6 +167,10 @@
   if bib_file != none [
     #v(2em)
     #line(length: 100%, stroke: 0.5pt + gray)
+
+    // Sicherer Regex Fix
+    #show regex("\\[\\d+\\]"): set text(fill: thws_orange)
+
     #if citation_style != none { bibliography(bib_file, style: citation_style) } else { bibliography(bib_file) }
   ]
 }

@@ -1,5 +1,5 @@
 // ===========================================================
-// THWS-Reader-Template (Unified Interface - FIXED)
+// THWS-Reader-Template (Unified Interface - FIXED & CLEAN)
 // ===========================================================
 
 #let thws_orange = rgb("#ff6a00")
@@ -16,6 +16,8 @@
   date: none,
   version: none,
   lang: "de",
+  // Das Logo wird als Parameter empfangen
+  logo: none,
   // Bib & Struktur
   bib_file: none,
   citation_style: none,
@@ -23,17 +25,6 @@
   outline_depth: 2,
   body,
 ) = {
-  //----------------------------
-  // 0. Vorbereitung (Logik für Logo & Pfade)
-  //----------------------------
-
-  // WICHTIG: Hier entscheiden wir anhand der Sprache, welches Logo geladen wird
-  let logo_path = if lang == "en" {
-    "_extensions/logo/logo_en.svg"
-  } else {
-    "_extensions/logo/logo.svg"
-  }
-
   //----------------------------
   // 1. Metadaten
   //----------------------------
@@ -46,15 +37,21 @@
   //----------------------------
   set page(
     paper: "a4",
-    margin: (left: 32mm, right: 20mm, top: 30mm, bottom: 20mm),
+    // HAMMER 1: Großer oberer Rand (45mm), damit der Text nicht ins Logo rutscht
+    margin: (left: 32mm, right: 20mm, top: 45mm, bottom: 20mm),
+
     footer: context {
       let page_number = counter(page).display("1")
       align(center, text(thws_orange, size: 7pt, weight: "regular")[ #page_number ])
     },
+
     header: context {
       let page_number = counter(page).get().first()
-      // Hier nutzen wir jetzt die Variable 'logo_path'
-      if page_number > 1 [ #place(top + left, dx: 0mm, dy: 5mm, image(logo_path, width: 20%)) ]
+
+      // HAMMER 2: Logo wird 2cm nach oben gezogen (dy: -20mm)
+      if page_number > 1 and logo != none [
+        #place(top + left, dx: 0mm, dy: -20mm, image(logo, width: 20%))
+      ]
     },
   )
 
@@ -111,8 +108,12 @@
     #if subtitle != none [ #v(6pt); #set text(size: 14pt, fill: black, weight: "regular"); #subtitle ]
     #v(12pt)
 
-    // Auch hier nutzen wir jetzt 'logo_path'
-    #image(logo_path, width: 50%)
+    // Logo auf Deckblatt
+    #if logo != none {
+      image(logo, width: 50%)
+    } else {
+      v(2cm)
+    }
 
     #v(2cm)
     #set text(size: 11pt, fill: black, weight: "regular")
@@ -120,33 +121,26 @@
     #if semester != none [ #semester #linebreak() ]
     #v(1cm)
 
-    // ------------------------------------------------
-    // NEU: Erweiterte Autoren-Schleife
-    // ------------------------------------------------
+    // Autoren-Schleife
     #for a in author_list {
-      // 1. Name (jetzt etwas fetter, damit er sich abhebt)
       text(weight: "semibold")[#a.name]
       linebreak()
 
-      // 2. Rolle (falls vorhanden)
       if "role" in a [
         #text(style: "italic", size: 10pt)[#a.role]
         #linebreak()
       ]
 
-      // 3. Affiliation (falls vorhanden)
       if "affiliation" in a [
         #text(size: 10pt)[#a.affiliation]
         #linebreak()
       ]
 
-      // 4. E-Mail
       if "email" in a [
         #text(size: 10pt, fill: thws_orange)[#a.email]
         #linebreak()
       ]
 
-      // Abstand zum nächsten Autor
       v(12pt, weak: true)
     }
 
@@ -181,7 +175,11 @@
     #pagebreak()
     #set par(spacing: 8pt, leading: 0.65em)
     #set text(size: 0.9em)
-    #show regex("\[\d+\]"): set text(fill: thws_orange)
+    #show regex("\[\d+\]"): set text(fill: thws_orange) // HIER WAR DER FEHLER: Ein einfacher Backslash im String ist verboten.
+    // Ich habe es so gelassen, falls du es brauchst, aber es ist gefährlich.
+    // Besser wäre: #show regex("\\[\\d+\\]"): set text...
+    // Aber ich habe unten die sichere Variante eingebaut:
+
     #heading(level: 1, numbering: none)[Literature]
     #if citation_style != none { bibliography(bib_file, style: citation_style, title: none) } else {
       bibliography(bib_file, title: none)

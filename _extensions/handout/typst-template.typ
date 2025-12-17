@@ -1,5 +1,5 @@
 // ===========================================================
-// THWS-Handout-Template (Unified & Polished)
+// THWS-Handout-Template (Fixed Centering)
 // ===========================================================
 
 #let thws_orange = rgb("#ff6a00")
@@ -16,6 +16,7 @@
   date: none,
   version: none,
   lang: "de",
+  logo: none,
   // Bib & Struktur
   bib_file: none,
   citation_style: none,
@@ -23,16 +24,6 @@
   outline_depth: 2,
   body,
 ) = {
-  //----------------------------
-  // 0. Vorbereitung (Logik für Logo)
-  //----------------------------
-  // WICHTIG: Pfad anpassen, falls deine Extension anders heißt!
-  let logo_path = if lang == "en" {
-    "_extensions/logo/logo_en.svg"
-  } else {
-    "_extensions/logo/logo.svg"
-  }
-
   //----------------------------
   // 1. Metadaten
   //----------------------------
@@ -44,19 +35,29 @@
   //----------------------------
   set page(
     paper: "a4",
-    margin: (left: 32mm, right: 20mm, top: 30mm, bottom: 20mm),
+    margin: (left: 32mm, right: 20mm, top: 45mm, bottom: 20mm),
+
     footer: context {
       let page_number = counter(page).display("1")
       align(center, text(thws_orange, size: 7pt, weight: "regular")[ #page_number ])
     },
-    header: [
-      // Logo dynamisch je nach Sprache
-      #place(top + left, dx: 0mm, dy: 5mm, image(logo_path, width: 20%))
 
-      #if course != none [
-        #place(top + right, dx: -5mm, dy: 5mm, text(fill: thws_orange, size: 10pt, weight: "regular")[*#course*])
-      ]
-    ],
+    header: context {
+      let page_number = counter(page).get().first()
+
+      // LOGIK: Auf Seite 1 ist das Logo im Titelblock. Ab Seite 2 im Header.
+      if page_number > 1 {
+        if logo != none {
+          // Logo links oben im Rand (hochgezogen)
+          place(top + left, dx: 0mm, dy: -20mm, image(logo, width: 20%))
+        }
+
+        // Optional: Kurs-Name rechts oben (ebenfalls hochgezogen)
+        if course != none {
+          place(top + right, dx: -5mm, dy: -20mm, text(fill: thws_orange, size: 9pt, weight: "regular")[*#course*])
+        }
+      }
+    },
   )
 
   //----------------------------
@@ -68,7 +69,6 @@
   show cite: set text(fill: thws_orange)
   set footnote(numbering: n => text(fill: thws_orange, numbering("1", n)))
 
-  // NEU: Listen & Aufzählungen in Orange (Analog zum Reader)
   set list(
     indent: 1em,
     marker: (text(fill: thws_orange)[•], text(fill: thws_orange)[‣], text(fill: thws_orange)[–]),
@@ -78,7 +78,7 @@
     numbering: (..nums) => text(fill: thws_orange, numbering("1.", ..nums)),
   )
 
-  // Tabellen (Unified Style)
+  // Tabellen
   set table(
     stroke: (x: (paint: thws_orange, thickness: 0.5pt), y: (paint: thws_orange, thickness: 0.5pt)),
     inset: (x: 4pt, y: 3pt),
@@ -94,34 +94,43 @@
     }
   }
 
-  // Überschriften (Handout-Style)
+  // Überschriften
   set heading(numbering: (..nums) => text(fill: thws_orange, numbering("1.1 ", ..nums)))
   show heading: set text(fill: thws_orange, weight: "semibold")
   show heading: set block(sticky: true)
   show heading.where(level: 1): set block(above: 2.5em, below: 1.2em)
 
   //----------------------------
-  // 4. TITELBLOCK
+  // 4. TITELBLOCK (Handout-Spezifisch)
   //----------------------------
-  block[
-    #set align(center)
-    #set par(leading: 0.5em, spacing: 0pt)
+
+  // FIX: Explizite Align-Umgebung um den ganzen Block + justify false
+  align(center, block(width: 100%)[
+    #set par(leading: 0.5em, spacing: 0pt, justify: false)
+
+    // Logo auf der ersten Seite
+    #if logo != none {
+      align(center, image(logo, width: 30%))
+      v(1em)
+    }
+
     #set text(size: 20pt, fill: thws_orange, style: "italic", weight: "regular")
     *#title*
+
     #if subtitle != none [
       #v(0.5em)
       #set text(size: 12pt, fill: black, style: "normal")
       #subtitle
     ]
-  ]
+  ])
+
   v(1cm)
 
   //----------------------------
   // 5. AUTORENBLOCK
   //----------------------------
-  align(center, block[
-    #set align(center)
-    #set par(leading: 0.6em, spacing: 4pt)
+  align(center, block(width: 100%)[
+    #set par(leading: 0.6em, spacing: 4pt, justify: false)
     #set text(size: 11pt, fill: black, style: "normal", weight: "regular")
 
     #for a in author_list {
@@ -131,7 +140,6 @@
 
       if "role" in a [ #text(style: "italic")[#a.role] #linebreak() ]
 
-      // NEU: Email in Orange
       if "email" in a [
         #text(fill: thws_orange)[#a.email]
         #linebreak()
@@ -142,13 +150,13 @@
   ])
   v(1cm)
 
-  // ABSTRACT (ehemals Intro)
+  // ABSTRACT
   if abstract != none [
     block(width: 100%, inset: (x: 2em))[#set align(center); #text(style: "italic", size: 11pt)[#abstract]]
     v(1.5cm)
   ] else [ #v(1cm) ]
 
-  // Inhaltsübersicht (Optional)
+  // Inhaltsübersicht
   if show_outline {
     let outline_title = if lang == "de" { "Inhaltsübersicht" } else { "Contents" }
     outline(title: outline_title, depth: outline_depth)
@@ -164,7 +172,10 @@
     #line(length: 100%, stroke: 0.5pt + gray)
     #set par(spacing: 8pt, leading: 0.65em)
     #set text(size: 0.9em)
-    #show regex("\[\d+\]"): set text(fill: thws_orange)
+
+    // Sicherer Regex Fix
+    #show regex("\\[\\d+\\]"): set text(fill: thws_orange)
+
     #if citation_style != none { bibliography(bib_file, style: citation_style) } else { bibliography(bib_file) }
   ]
 }
