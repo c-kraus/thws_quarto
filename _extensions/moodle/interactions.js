@@ -1,11 +1,27 @@
 <script>
   document.addEventListener("DOMContentLoaded", function() {
 
+ // --- 0. KONFIGURATION (Automatische Spracherkennung) ---
+  // Wir lesen das "lang"-Attribut aus dem HTML-Tag (das Quarto setzt)
+  const currentLang = document.documentElement.lang || 'en';
+  const isGerman = currentLang.startsWith('de'); // Erkennt 'de', 'de-DE', 'de-AT'
+
+  const t = isGerman ? {
+    // DEUTSCH
+    placeholder: "Ihre Überlegungen hier notieren...",
+  reveal: "Lösung anzeigen",
+  hide: "Lösung verbergen"
+  } : {
+    // ENGLISCH (Fallback)
+    placeholder: "Write your thoughts here...",
+  reveal: "Show Solution",
+  hide: "Hide Solution"
+  };
+
   // --- MODUL 1: Click-to-Select (Gap Text) ---
   try {
     const dragExercises = document.querySelectorAll(".drag-exercise");
     dragExercises.forEach((ex) => {
-      // Quarto turns *Word* into <em>Word</em>. We look for that tag.
       const originalHTML = ex.innerHTML;
   const parts = originalHTML.split(/(<em>.*?<\/em>)/g);
 
@@ -23,7 +39,6 @@
         }
       });
 
-      // TRANSLATION: "Check" button
       newHtml += '</div><div class="click-pool"></div><button class="check-btn">Check</button>';
     ex.innerHTML = newHtml;
 
@@ -125,7 +140,6 @@
         const explanationBlock = qc.querySelector("blockquote");
         const explanation = explanationBlock ? explanationBlock.innerHTML : "";
 
-        // TRANSLATION: Fallback title
         let questionText = "Test your knowledge:";
         const p = qc.querySelector("p");
         if (p && p !== explanationBlock) questionText = p.innerHTML;
@@ -152,13 +166,11 @@
             if (btn.dataset.correct === "true") {
               btn.classList.add("correct");
               feedback.classList.add("show-correct");
-              // TRANSLATION: Correct
               feedback.innerHTML = "<strong>Correct!</strong> " + feedback.innerHTML;
             } else {
               btn.classList.add("wrong");
               btns.forEach(b => { if (b.dataset.correct === "true") b.classList.add("correct-dimmed"); });
               feedback.classList.add("show-wrong");
-              // TRANSLATION: Not quite (better than Wrong)
               feedback.innerHTML = "<strong>Not quite.</strong> " + feedback.innerHTML;
             }
             feedback.style.display = "block";
@@ -167,50 +179,43 @@
       });
   } catch (e) {console.error("Error in Quiz Module:", e); }
 
-});
 
-      // -----------------------------------------------------------
-      // MODUL 4: Reflection Pattern (Case Study)
-      // -----------------------------------------------------------
-      try {
+    // --- MODUL 4: Reflection Pattern (Case Study) ---
+    try {
     const cases = document.querySelectorAll('.case-study');
 
     cases.forEach((caseBox) => {
       const solution = caseBox.querySelector('.solution');
 
-      if (solution) {
+    if (solution) {
         // 1. Textfeld
         const inputArea = document.createElement('textarea');
-      inputArea.className = 'student-input';
-      // HIER: Sprachvariable t.placeholder
-      inputArea.placeholder = t.placeholder;
+    inputArea.className = 'student-input';
+    inputArea.placeholder = t.placeholder;
 
-      // 2. Button
-      const button = document.createElement('button');
-      button.className = 'reveal-btn';
-      // HIER: Sprachvariable t.reveal
-      button.innerText = t.reveal;
+    // 2. Button
+    const button = document.createElement('button');
+    button.className = 'reveal-btn';
+    button.innerText = t.reveal;
 
-      // 3. Einfügen
-      caseBox.insertBefore(inputArea, solution);
-      caseBox.insertBefore(button, solution);
+    // 3. Einfügen
+    caseBox.insertBefore(inputArea, solution);
+    caseBox.insertBefore(button, solution);
 
-      // 4. Klick-Logik
-      button.addEventListener('click', function() {
+    // 4. Klick-Logik
+    button.addEventListener('click', function() {
           if (solution.style.display === 'block') {
-        solution.style.display = 'none';
-      // HIER: Variable t.reveal (wieder zurück)
-      button.innerText = t.reveal;
+      solution.style.display = 'none';
+    button.innerText = t.reveal;
           } else {
-        solution.style.display = 'block';
-      // HIER: Variable t.hide
-      button.innerText = t.hide;
+      solution.style.display = 'block';
+    button.innerText = t.hide;
           }
         });
       }
     });
   } catch (e) {console.error("Error in Reflection Module:", e); }
 
+// WICHTIG: Erst hier endet der Event-Listener für alle Module!
 });
-
 </script>
