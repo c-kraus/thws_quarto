@@ -1,4 +1,70 @@
--- gentleman-core.lua (ehemals h4-fix.lua)
+-- ============================================
+
+-- LOGO-HEADER LOGIK
+
+-- ============================================
+
+-- Fügt das Logo aus den Metadaten ein (falls vorhanden)
+
+  
+
+function Pandoc(doc)
+
+-- Nur für HTML-Output
+
+if not quarto.doc.is_format("html") then
+
+return nil
+
+end
+
+  
+
+-- Logo-Pfad aus Metadaten lesen
+
+local logo_path = nil
+
+if doc.meta.logo then
+
+logo_path = pandoc.utils.stringify(doc.meta.logo)
+
+end
+
+  
+
+-- Wenn kein Logo definiert, nichts ändern
+
+if not logo_path or logo_path == "" then
+
+return nil
+
+end
+
+  
+
+-- Verstecktes Element mit Logo-Pfad für JavaScript
+
+-- JavaScript fügt das Logo dann in die Sidebar ein
+
+local logo_html = string.format([[
+
+<div id="logo-data" data-logo-src="%s" style="display:none;"></div>
+
+]], logo_path)
+
+  
+
+-- Logo-Data-Block am Anfang des Dokuments einfügen
+
+local logo_block = pandoc.RawBlock("html", logo_html)
+
+table.insert(doc.blocks, 1, logo_block)
+
+  
+
+return doc
+
+end
 
 -- Hilfsfunktion: Trennt Titel (H4) vom Inhalt
 local function split_title_content(el)
