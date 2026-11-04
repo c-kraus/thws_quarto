@@ -1,5 +1,20 @@
 # Changelog
 
+## [2.0.4] — 2026-11-04
+
+Patch-Release nur für `tutorial-typst`. `reader` / `handout` bleiben 2.0.3, `moodle-html` 1.0.0.
+
+### tutorial
+- **Fix: Apostrophe und Anführungszeichen in Aufgaben-Überschriften.** H2-/H4-Überschriften
+  werden für Badge und Punkte-Pille aus dem Klartext neu gesetzt; Pandocs smartquote-Elemente
+  fielen dabei weg („The Investors View" statt „The Investor’s View"). Sie bleiben jetzt erhalten
+  und werden sprachabhängig typografisch gesetzt (DE „…" ‚…', EN “…” ‘…’, Apostroph ’).
+- **Fix: Englische Blätter mit deutschen Beschriftungen.** Bei `lang: en` waren der Meta-Streifen
+  (Modul · Dozent · Ausgabe), die QR-Beschriftung („Online-Version") sowie die Defaults für Titel
+  und Fakultät deutsch. Jetzt Course · Lecturer · Issued, „Online version", „Worksheet",
+  „Faculty of Business and Engineering" (gesetzte Keys `title:` / `faculty:` gewinnen weiterhin).
+- Sprachprüfung einheitlich über `lang-de`, damit auch `lang: de-DE` deutsch beschriftet wird.
+
 ## [2.0.3] — 2026-08-19
 
 Patch-Release der drei PDF-Formate (`reader` / `handout` / `tutorial`). `moodle-html` unverändert.

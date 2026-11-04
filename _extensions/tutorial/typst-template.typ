@@ -54,21 +54,54 @@
   else if c.has("text") { c.text }
   else if c.has("children") { c.children.map(to-string).join() }
   else if c.has("body") { to-string(c.body) }
+  // Apostroph/Anführungszeichen: Pandoc liefert sie als smartquote-Elemente
+  // (kein .text) — ohne diesen Zweig fielen sie still weg ("Investors View").
+  else if c.func() == smartquote { if c.at("double", default: true) { "\"" } else { "'" } }
   else if c == [ ] { " " }
   else { "" }
+}
+
+// Gerade Anführungszeichen aus to-string() wieder typografisch setzen — als
+// String ausgegeben macht Typst das nicht selbst. Öffnend nach Wortgrenze,
+// Apostroph innerhalb eines Worts, sonst schließend; DE „…“ ‚…‘, EN “…” ‘…’.
+#let typo-quotes(s, de: true) = {
+  let cs = s.clusters()
+  let out = ""
+  let open-single = false
+  for (i, ch) in cs.enumerate() {
+    let prev = if i > 0 { cs.at(i - 1) } else { none }
+    let next = if i + 1 < cs.len() { cs.at(i + 1) } else { none }
+    let opening = prev == none or prev.match(regex("[\\s(\\[{/\\-–—]")) != none
+    if ch == "\"" {
+      out += if opening { if de { "\u{201E}" } else { "\u{201C}" } } else { if de { "\u{201C}" } else { "\u{201D}" } }
+    } else if ch == "'" {
+      if opening {
+        open-single = true
+        out += if de { "\u{201A}" } else { "\u{2018}" }
+      } else if open-single and (next == none or next.match(regex("[\\p{L}\\p{N}]")) == none) {
+        open-single = false
+        out += if de { "\u{2018}" } else { "\u{2019}" }
+      } else {
+        out += "\u{2019}"
+      }
+    } else {
+      out += ch
+    }
+  }
+  out
 }
 
 // ===========================================================================
 // HAUPT-TEMPLATE
 // ===========================================================================
 #let project(
-  title: [Übungsblatt],
+  title: none,
   subtitle: none,
   abstract: none,
   authors: (),
   course: none,
   semester: none,
-  faculty: [Fakultät Wirtschaftsingenieurwesen],
+  faculty: none,
   university: [Technische Hochschule Würzburg-Schweinfurt],
   date: none,
   version: none,
@@ -102,6 +135,9 @@
   // Quarto liefert ISO unabhängig von lang — daher parsen und neu formatieren.
   // (Regex-Endanker als $$ — typst-template.typ ist ein Pandoc-Template.)
   let lang-de = lang == none or lang.starts-with("de")
+  // Defaults sprachabhängig (gesetzte Keys gewinnen).
+  if title == none { title = if lang-de { [Übungsblatt] } else { [Worksheet] } }
+  if faculty == none { faculty = if lang-de { [Fakultät Wirtschaftsingenieurwesen] } else { [Faculty of Business and Engineering] } }
   let date-fmt = if lang-de { "[day].[month].[year]" } else { "[month repr:long] [day], [year]" }
   let parse-iso(d) = {
     if type(d) == str and d.match(regex("^\\d{4}-\\d{2}-\\d{2}$$")) != none {
@@ -173,7 +209,7 @@
     v(1.4em)
     line(length: 100%, stroke: 0.5pt + thws-line)
     v(0.6em)
-    text(weight: "bold", fill: thws-ink, size: 10.5pt)[#if lang == "de" { "Literatur" } else { "Literature" }]
+    text(weight: "bold", fill: thws-ink, size: 10.5pt)[#if lang-de { "Literatur" } else { "Literature" }]
     v(0.5em)
     set text(size: 9pt)
     set par(leading: 0.62em, spacing: 8pt)
@@ -200,9 +236,9 @@
     let s = to-string(it.body)
     let m = s.match(regex("^\\s*(.+?)\\s+(\\d+)\\s*[:.)]\\s*(.*)$$"))
     if m != none {
-      let label = m.captures.at(0)
+      let label = typo-quotes(m.captures.at(0), de: lang-de)
       let num = m.captures.at(1)
-      let rest = m.captures.at(2)
+      let rest = typo-quotes(m.captures.at(2), de: lang-de)
       // Jede große Aufgabe auf eine neue Seite — außer der ersten.
       thws-case-counter.step()
       context { if thws-case-counter.get().first() > 1 { pagebreak(weak: true) } }
@@ -235,7 +271,7 @@
     let m = s.match(regex("^\\s*(?:Task|Aufgabe)\\s+(\\d+)\\s*[:.)]?\\s*(.*)$$"))
     if m != none {
       let num = m.captures.at(0)
-      let rest = m.captures.at(1)
+      let rest = typo-quotes(m.captures.at(1), de: lang-de)
       let label = if lang-de { "Aufgabe" } else { "Task" }   // Label folgt lang, nicht dem Quelltext
       // Punkte am Ende der Überschrift: "[3 P]" / "[3 Punkte]" / "[3]" → Pille rechts.
       let pts = none
@@ -283,8 +319,8 @@
   set par(justify: false)
   v(6pt)
   text(size: 11pt, tracking: 0.26em, fill: thws-orange, weight: "bold")[
-    #upper(if lang == "de" { "Übungsblatt" } else { "Worksheet" })
-    #if sheet_no != none [ #h(2pt) #text(fill: thws-teal)[ · #(if lang == "de" { "Nr." } else { "No." }) #sheet_no] ]
+    #upper(if lang-de { "Übungsblatt" } else { "Worksheet" })
+    #if sheet_no != none [ #h(2pt) #text(fill: thws-teal)[ · #(if lang-de { "Nr." } else { "No." }) #sheet_no] ]
   ]
   v(12pt)
   text(size: 30pt, weight: "bold", fill: thws-ink, hyphenate: false)[#title]
@@ -298,9 +334,9 @@
     // Bewusst nur Modul · Dozent · Ausgabe — Zeit und Punkte sind raus, damit
     // der Dozentenname nicht umbricht.
     let metas = (
-      (if course != none { ("Modul", course) }),
-      (if author_string != "THWS" { ("Dozent", author_string) }),
-      (if date-disp != none { ("Ausgabe", date-disp) }),
+      (if course != none { (if lang-de { "Modul" } else { "Course" }, course) }),
+      (if author_string != "THWS" { (if lang-de { "Dozent" } else { "Lecturer" }, author_string) }),
+      (if date-disp != none { (if lang-de { "Ausgabe" } else { "Issued" }, date-disp) }),
     ).filter(x => x != none)
 
     block(width: 100%, stroke: (top: 0.5pt + thws-line, bottom: 0.5pt + thws-line), inset: (y: 10pt))[
@@ -323,7 +359,7 @@
       #align(center)[
         #box(fill: white, inset: 3pt, radius: 3pt)[#qr-code(qr_target, width: 15mm)]
         #v(2pt)
-        #text(size: 5.5pt, fill: thws-muted)[Online-Version]
+        #text(size: 5.5pt, fill: thws-muted)[#if lang-de { "Online-Version" } else { "Online version" }]
       ]
     ]
   }
